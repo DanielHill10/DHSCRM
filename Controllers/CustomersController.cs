@@ -20,9 +20,20 @@ namespace DHSCRM.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            return View(await _context.Customers.ToListAsync());
+            ViewData["NameSort"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            var customers = from c in _context.Customers select c;
+            switch(sortOrder)
+            {
+                case "name_desc":
+                    customers = customers.OrderByDescending(c => c.CustomerName);
+                    break;
+                default:
+                    customers = customers.OrderBy(c => c.CustomerName);
+                    break;
+            }
+            return View(await customers.AsNoTracking().ToListAsync());
         }
 
         // GET: Customers/Details/5

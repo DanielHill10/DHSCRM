@@ -463,3 +463,4 @@ C:\Users\Daniel.Hill\source\repos\DHSCRM\bin\Debug\net5.0\refs\WindowsBase.dll
 C:\Users\Daniel.Hill\source\repos\DHSCRM\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.Razor.Extensions.dll
 C:\Users\Daniel.Hill\source\repos\DHSCRM\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation.dll
 C:\Users\Daniel.Hill\source\repos\DHSCRM\obj\Debug\net5.0\DHSCRM.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Daniel.Hill\source\repos\DHSCRM\obj\Debug\net5.0\DHSCRM.csprojAssemblyReference.cache

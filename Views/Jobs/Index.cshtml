@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["JobNumSort"]">@Html.DisplayNameFor(model => model.JobId)</a>
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.JobName)
             </th>
             <th>
@@ -33,6 +36,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.JobId)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.JobName)
             </td>

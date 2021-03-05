@@ -20,9 +20,20 @@ namespace DHSCRM.Controllers
         }
 
         // GET: Jobs
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            return View(await _context.Jobs.ToListAsync());
+            ViewData["JobNumSort"] = string.IsNullOrEmpty(sortOrder) ? "jobNumDesc" : "";
+            var jobs = from j in _context.Jobs select j;
+            switch(sortOrder)
+            {
+                case "jobNumDesc":
+                    jobs = jobs.OrderByDescending(j => j.JobId);
+                    break;
+                default:
+                    jobs = jobs.OrderBy(j => j.JobId);
+                    break;
+            }
+            return View(await jobs.ToListAsync());
         }
 
         // GET: Jobs/Details/5

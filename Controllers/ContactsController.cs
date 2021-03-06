@@ -23,7 +23,8 @@ namespace DHSCRM.Controllers
         public async Task<IActionResult> Index(string sortOrder)
         {
             ViewData["FirstNameSort"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            var contacts = from c in _context.Contacts select c;
+            //var contacts = from c in _context.Contacts select c;
+            var contacts = _context.Contacts.Include(c => c.Customer).AsNoTracking();
             switch(sortOrder)
             {
                 case "name_desc":

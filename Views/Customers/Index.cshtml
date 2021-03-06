@@ -9,6 +9,13 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form class="form-inline mb-5" asp-action="Index" method="get">
+    <label class="form-inline mr-2">Search by Customer Name</label>
+    <input type="text" class="form-control ml-2 mr-2" name="SearchString" value="@ViewData["SearchString"]" />
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -37,35 +44,36 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddressStreet)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddressTown)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddressCounty)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddressPostCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmailAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telephone)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CustomerId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CustomerId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CustomerId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AddressStreet)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AddressTown)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AddressCounty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AddressPostCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmailAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telephone)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CustomerId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.CustomerId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CustomerId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

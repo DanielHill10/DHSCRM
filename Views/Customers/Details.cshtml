@@ -1,4 +1,4 @@
-﻿@model DHSCRM.Models.Customer
+﻿@model DHSCRM.ViewModels.CustomerDetailViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -11,52 +11,52 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CustomerName)
+            @Html.DisplayNameFor(model => model.Customer.CustomerName)
         </dt>
         <dd class="col-sm-4">
-            @Html.DisplayFor(model => model.CustomerName)
+            @Html.DisplayFor(model => model.Customer.CustomerName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AddressStreet)
+            @Html.DisplayNameFor(model => model.Customer.AddressStreet)
         </dt>
         <dd class="col-sm-4">
-            @Html.DisplayFor(model => model.AddressStreet)
+            @Html.DisplayFor(model => model.Customer.AddressStreet)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AddressTown)
+            @Html.DisplayNameFor(model => model.Customer.AddressTown)
         </dt>
         <dd class="col-sm-4">
-            @Html.DisplayFor(model => model.AddressTown)
+            @Html.DisplayFor(model => model.Customer.AddressTown)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AddressCounty)
+            @Html.DisplayNameFor(model => model.Customer.AddressCounty)
         </dt>
         <dd class="col-sm-4">
-            @Html.DisplayFor(model => model.AddressCounty)
+            @Html.DisplayFor(model => model.Customer.AddressCounty)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AddressPostCode)
+            @Html.DisplayNameFor(model => model.Customer.AddressPostCode)
         </dt>
         <dd class="col-sm-4">
-            @Html.DisplayFor(model => model.AddressPostCode)
+            @Html.DisplayFor(model => model.Customer.AddressPostCode)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EmailAddress)
+            @Html.DisplayNameFor(model => model.Customer.EmailAddress)
         </dt>
         <dd class="col-sm-4">
-            @Html.DisplayFor(model => model.EmailAddress)
+            @Html.DisplayFor(model => model.Customer.EmailAddress)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Telephone)
+            @Html.DisplayNameFor(model => model.Customer.Telephone)
         </dt>
         <dd class="col-sm-4">
-            @Html.DisplayFor(model => model.Telephone)
+            @Html.DisplayFor(model => model.Customer.Telephone)
         </dd>
     </dl>
 </div>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.CustomerId">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Customer.CustomerId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
 
@@ -76,7 +76,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Contacts)
+            @foreach (var item in Model.Customer.Contacts)
             {
                 <tr>
                     <td scope="row">

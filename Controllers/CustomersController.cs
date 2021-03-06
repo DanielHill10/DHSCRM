@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DHSCRM.Data;
 using DHSCRM.Models;
+using DHSCRM.ViewModels;
 
 namespace DHSCRM.Controllers
 {
@@ -20,10 +21,18 @@ namespace DHSCRM.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
             ViewData["NameSort"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["SearchString"] = searchString;
+
             var customers = from c in _context.Customers select c;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                customers = customers.Where(c => c.CustomerName.Contains(searchString));
+            }
+
             switch(sortOrder)
             {
                 case "name_desc":
@@ -53,7 +62,10 @@ namespace DHSCRM.Controllers
                 return NotFound();
             }
 
-            return View(customer);
+            var customerDetailViewModel = new CustomerDetailViewModel();
+            customerDetailViewModel.Customer = customer;
+
+            return View(customerDetailViewModel);
         }
 
         // GET: Customers/Create

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DHSCRM.Data;
 using DHSCRM.Models;
+using DHSCRM.ViewModels;
 
 namespace DHSCRM.Controllers
 {
@@ -46,19 +47,26 @@ namespace DHSCRM.Controllers
             }
 
             var contact = await _context.Contacts
+                .Include(c => c.Customer)
                 .FirstOrDefaultAsync(m => m.ContactId == id);
             if (contact == null)
             {
                 return NotFound();
             }
 
-            return View(contact);
+            var contactDetailViewModel = new ContactDetailViewModel();
+            contactDetailViewModel.Contact = contact;
+            contactDetailViewModel.Customer = contact.Customer;
+
+            return View(contactDetailViewModel);
         }
 
         // GET: Contacts/Create
         public IActionResult Create()
         {
-            return View();
+            var contactDetailViewModel = new ContactDetailViewModel();
+            contactDetailViewModel.Customers = _context.Customers.Select(c => new SelectListItem() { Value = c.CustomerId.ToString(), Text = c.CustomerName }).ToList();
+            return View(contactDetailViewModel);
         }
 
         // POST: Contacts/Create
@@ -66,8 +74,12 @@ namespace DHSCRM.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ContactId,FirstName,LastName,EmailAddress,Telephone")] Contact contact)
+        public async Task<IActionResult> Create([Bind("ContactId,FirstName,LastName,EmailAddress,Telephone")] Contact contact, ContactDetailViewModel contactDetailViewModel)
         {
+            contact.Customer = await _context.Customers.FirstOrDefaultAsync(c => c.CustomerId == contactDetailViewModel.Customer.CustomerId);
+            //Has to be a better way of doing this??? Why is it faling without... 06/03/2021
+            ModelState.Remove("Customer.CustomerName");
+
             if (ModelState.IsValid)
             {
                 _context.Add(contact);
@@ -85,12 +97,23 @@ namespace DHSCRM.Controllers
                 return NotFound();
             }
 
-            var contact = await _context.Contacts.FindAsync(id);
+            var contact = await _context.Contacts
+                 .Include(c => c.Customer)
+                 .FirstOrDefaultAsync(m => m.ContactId == id);
             if (contact == null)
             {
                 return NotFound();
             }
-            return View(contact);
+
+            var contactDetailViewModel = new ContactDetailViewModel();
+            contactDetailViewModel.Contact = contact;
+            contactDetailViewModel.Customer = contact.Customer;
+
+            //Get all customers into a list variable
+            //var customerList = await (from c in _context.Customers select c).ToListAsync();
+            contactDetailViewModel.Customers = await _context.Customers.Select(c => new SelectListItem() { Value = c.CustomerId.ToString(), Text = c.CustomerName }).ToListAsync();
+
+            return View(contactDetailViewModel);
         }
 
         // POST: Contacts/Edit/5
@@ -98,8 +121,10 @@ namespace DHSCRM.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ContactId,FirstName,LastName,EmailAddress,Telephone")] Contact contact)
+        public async Task<IActionResult> Edit(int id, [Bind("ContactId,FirstName,LastName,EmailAddress,Telephone")] Contact contact, ContactDetailViewModel contactDetailViewModel)
         {
+            contact.Customer = await _context.Customers.FirstOrDefaultAsync(c => c.CustomerId == contactDetailViewModel.Customer.CustomerId);
+
             if (id != contact.ContactId)
             {
                 return NotFound();
@@ -125,7 +150,7 @@ namespace DHSCRM.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(contact);
+            return View(contactDetailViewModel);
         }
 
         // GET: Contacts/Delete/5

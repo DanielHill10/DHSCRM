@@ -1,4 +1,4 @@
-﻿@model DHSCRM.Models.Contact
+﻿@model DHSCRM.ViewModels.ContactDetailViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,26 +12,31 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ContactId" />
+            <input type="hidden" asp-for="Contact.ContactId" />
             <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+                <label asp-for="Contact.FirstName" class="control-label"></label>
+                <input asp-for="Contact.FirstName" class="form-control" />
+                <span asp-validation-for="Contact.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
+                <label asp-for="Contact.LastName" class="control-label"></label>
+                <input asp-for="Contact.LastName" class="form-control" />
+                <span asp-validation-for="Contact.LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EmailAddress" class="control-label"></label>
-                <input asp-for="EmailAddress" class="form-control" />
-                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                <label asp-for="Contact.EmailAddress" class="control-label"></label>
+                <input asp-for="Contact.EmailAddress" class="form-control" />
+                <span asp-validation-for="Contact.EmailAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Telephone" class="control-label"></label>
-                <input asp-for="Telephone" class="form-control" />
-                <span asp-validation-for="Telephone" class="text-danger"></span>
+                <label asp-for="Contact.Telephone" class="control-label"></label>
+                <input asp-for="Contact.Telephone" class="form-control" />
+                <span asp-validation-for="Contact.Telephone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Customer.CustomerName" class="control-label"></label>
+                <select class="form-control dropdown" asp-for="Customer.CustomerId" asp-items="@Model.Customers">
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

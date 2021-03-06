@@ -46,7 +46,10 @@
                 @Html.DisplayFor(modelItem => item.Telephone)
             </td>
             <td>
-                <a asp-controller="Customers" asp-action="Details" asp-route-id="@item.Customer.CustomerId">@Html.DisplayFor(modelItem => item.Customer.CustomerName)</a>
+                @if (item.Customer != null)
+                {
+                    <a asp-controller="Customers" asp-action="Details" asp-route-id="@item.Customer.CustomerId">@Html.DisplayFor(modelItem => item.Customer.CustomerName)</a>
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ContactId">Edit</a> |

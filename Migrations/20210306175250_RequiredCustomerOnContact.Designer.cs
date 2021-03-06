@@ -4,14 +4,16 @@ using DHSCRM.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DHSCRM.Migrations
 {
     [DbContext(typeof(RecordDetailContext))]
-    partial class RecordDetailContextModelSnapshot : ModelSnapshot
+    [Migration("20210306175250_RequiredCustomerOnContact")]
+    partial class RequiredCustomerOnContact
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,18 +28,16 @@ namespace DHSCRM.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CustomerId")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<string>("EmailAddress")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telephone")
@@ -70,7 +70,6 @@ namespace DHSCRM.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomerName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmailAddress")
@@ -120,7 +119,9 @@ namespace DHSCRM.Migrations
                 {
                     b.HasOne("DHSCRM.Models.Customer", "Customer")
                         .WithMany("Contacts")
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
                 });

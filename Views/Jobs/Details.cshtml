@@ -1,4 +1,4 @@
-﻿@model DHSCRM.Models.Job
+﻿@model DHSCRM.ViewModels.JobDetailViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -10,39 +10,45 @@
     <h4>Job</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.JobName)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Job.JobName)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.JobName)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Job.JobName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.JobDescription)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Job.JobDescription)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.JobDescription)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Job.JobDescription)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PostcodeFrom)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Job.PostcodeFrom)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PostcodeFrom)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Job.PostcodeFrom)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PostcodeTo)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Job.PostcodeTo)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PostcodeTo)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Job.PostcodeTo)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalMiles)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Job.TotalMiles)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalMiles)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Job.TotalMiles)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer.CustomerName)
+        </dt>
+        <dd class="col-sm-10">
+            <a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.Customer.CustomerId">@Html.DisplayFor(model => model.Customer.CustomerName)</a>
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.JobId">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Job.JobId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

@@ -18,6 +18,7 @@ namespace DHSCRM.Models
         [Display(Name = "Email Address")]
         public string EmailAddress { get; set; }
         public string Telephone { get; set; }
+        public int CustomerId { get; set; }
         public Customer Customer { get; set; }
     }
 }

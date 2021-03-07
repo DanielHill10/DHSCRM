@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DHSCRM.Data;
 using DHSCRM.Models;
+using DHSCRM.ViewModels;
 
 namespace DHSCRM.Controllers
 {
@@ -23,7 +24,7 @@ namespace DHSCRM.Controllers
         public async Task<IActionResult> Index(string sortOrder)
         {
             ViewData["JobNumSort"] = string.IsNullOrEmpty(sortOrder) ? "jobNumDesc" : "";
-            var jobs = from j in _context.Jobs select j;
+            var jobs = _context.Jobs.Include(j => j.Customer).AsNoTracking();
             switch(sortOrder)
             {
                 case "jobNumDesc":
@@ -39,6 +40,7 @@ namespace DHSCRM.Controllers
         // GET: Jobs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var jobDetailViewModel = new JobDetailViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -51,13 +53,23 @@ namespace DHSCRM.Controllers
                 return NotFound();
             }
 
-            return View(job);
+            var customer = await _context.Customers.FirstOrDefaultAsync(m => m.CustomerId == job.CustomerId);
+            if (customer != null)
+            {
+                jobDetailViewModel.Customer = customer;
+            }
+
+            jobDetailViewModel.Job = job;
+
+            return View(jobDetailViewModel);
         }
 
         // GET: Jobs/Create
         public IActionResult Create()
         {
-            return View();
+            var jobDetailViewModel = new JobDetailViewModel();
+            jobDetailViewModel.Customers = _context.Customers.Select(c => new SelectListItem { Value = c.CustomerId.ToString(), Text = c.CustomerName }).ToList();
+            return View(jobDetailViewModel);
         }
 
         // POST: Jobs/Create
@@ -65,8 +77,10 @@ namespace DHSCRM.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("JobId,JobName,JobDescription,PostcodeFrom,PostcodeTo,TotalMiles")] Job job)
+        public async Task<IActionResult> Create([Bind("JobId,JobName,JobDescription,PostcodeFrom,PostcodeTo,TotalMiles")] Job job, JobDetailViewModel jobDetailViewModel)
         {
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.CustomerId == jobDetailViewModel.Job.CustomerId);
+            job.Customer = customer;
             if (ModelState.IsValid)
             {
                 _context.Add(job);
@@ -159,6 +173,14 @@ namespace DHSCRM.Controllers
         private bool JobExists(int id)
         {
             return _context.Jobs.Any(e => e.JobId == id);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CalculateMilage()
+        {
+            TempData["ButtonValue"] = "123";
+            return RedirectToAction("Create");
         }
     }
 }

@@ -30,6 +30,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.TotalMiles)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer.CustomerName)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -53,6 +56,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TotalMiles)
+            </td>
+            <td>
+                <a asp-controller="Customers" asp-action="Details" asp-route-id="@item.Customer.CustomerId">@Html.DisplayFor(modelItem => item.Customer.CustomerName)</a>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.JobId">Edit</a> |

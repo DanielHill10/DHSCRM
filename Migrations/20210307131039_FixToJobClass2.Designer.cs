@@ -4,14 +4,16 @@ using DHSCRM.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DHSCRM.Migrations
 {
     [DbContext(typeof(RecordDetailContext))]
-    partial class RecordDetailContextModelSnapshot : ModelSnapshot
+    [Migration("20210307131039_FixToJobClass2")]
+    partial class FixToJobClass2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

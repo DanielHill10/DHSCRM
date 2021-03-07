@@ -76,9 +76,9 @@ namespace DHSCRM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ContactId,FirstName,LastName,EmailAddress,Telephone")] Contact contact, ContactDetailViewModel contactDetailViewModel)
         {
-            contact.Customer = await _context.Customers.FirstOrDefaultAsync(c => c.CustomerId == contactDetailViewModel.Customer.CustomerId);
+            contact.Customer = await _context.Customers.FirstOrDefaultAsync(c => c.CustomerId == contactDetailViewModel.Contact.CustomerId);
             //Has to be a better way of doing this??? Why is it faling without... 06/03/2021
-            ModelState.Remove("Customer.CustomerName");
+            //ModelState.Remove("Customer.CustomerName");
 
             if (ModelState.IsValid)
             {

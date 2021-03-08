@@ -25,7 +25,7 @@ namespace DHSCRM.Controllers
         {
             ViewData["JobNumSort"] = string.IsNullOrEmpty(sortOrder) ? "jobNumDesc" : "";
             var jobs = _context.Jobs.Include(j => j.Customer).AsNoTracking();
-            switch(sortOrder)
+            switch (sortOrder)
             {
                 case "jobNumDesc":
                     jobs = jobs.OrderByDescending(j => j.JobId);
@@ -65,10 +65,11 @@ namespace DHSCRM.Controllers
         }
 
         // GET: Jobs/Create
-        public IActionResult Create()
+        public IActionResult Create(JobDetailViewModel model)
         {
             var jobDetailViewModel = new JobDetailViewModel();
             jobDetailViewModel.Customers = _context.Customers.Select(c => new SelectListItem { Value = c.CustomerId.ToString(), Text = c.CustomerName }).ToList();
+
             return View(jobDetailViewModel);
         }
 
@@ -177,7 +178,7 @@ namespace DHSCRM.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CalculateMilage()
+        public IActionResult CalculateMilage(int value1, int value2)
         {
             TempData["ButtonValue"] = "123";
             return RedirectToAction("Create");

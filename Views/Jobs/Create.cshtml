@@ -24,17 +24,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="Job.PostcodeFrom" class="control-label"></label>
-                <input asp-for="Job.PostcodeFrom" class="form-control" />
+                <input asp-for="Job.PostcodeFrom" id="postCodeFrom" class="form-control" />
                 <span asp-validation-for="Job.PostcodeFrom" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Job.PostcodeTo" class="control-label"></label>
-                <input asp-for="Job.PostcodeTo" class="form-control" />
+                <input asp-for="Job.PostcodeTo" id="postCodeTo" class="form-control" />
                 <span asp-validation-for="Job.PostcodeTo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Job.TotalMiles" class="control-label"></label>
-                <input asp-for="Job.TotalMiles" class="form-control" />
+                <input asp-for="Job.TotalMiles" id="totalMiles" class="form-control" />
                 <span asp-validation-for="Job.TotalMiles" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -42,7 +42,7 @@
                 <select asp-for="Job.CustomerId" asp-items="@Model.Customers">
                     <option selected></option>
                 </select>
-                <span asp-validation-for="Job.CustomerId" class="text-danger"></span>
+                <span asp-validation-for="Customer.CustomerId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -51,13 +51,11 @@
     </div>
 </div>
 
-<form asp-controller="Jobs" asp-action="CalculateMilage">
-    <button class="btn btn-info">Calculate Milage</button>
-</form>
-
 <hr />
 @TempData["ButtonValue"]
 <hr />
+
+<button class="btn btn-info" id="btnCalculate"> Calculate Milage</button>
 
 <div>
     <a asp-action="Index">Back to List</a>
@@ -65,4 +63,24 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function () {
+
+            "use strict";
+
+            $(document).on("click", "#btnCalculate", (function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                var postCodeFrom = $("#postCodeFrom").val();
+                var postCodeTo = $("#postCodeTo").val();
+                var total = postCodeFrom + postCodeTo;
+
+                $("#totalMiles").val(total);
+
+            }));
+
+        });
+    </script>
 }

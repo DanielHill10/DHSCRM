@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using DHSCRM.Data;
 using DHSCRM.Models;
 using DHSCRM.ViewModels;
+using System.Net.Http;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace DHSCRM.Controllers
 {
@@ -78,7 +81,7 @@ namespace DHSCRM.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("JobId,JobName,JobDescription,PostcodeFrom,PostcodeTo,TotalMiles")] Job job, JobDetailViewModel jobDetailViewModel)
+        public async Task<IActionResult> Create([Bind("JobId,JobName,JobDescription,PostcodeFrom,PostcodeTo,TotalMiles, JobDate")] Job job, JobDetailViewModel jobDetailViewModel)
         {
             var customer = await _context.Customers.FirstOrDefaultAsync(c => c.CustomerId == jobDetailViewModel.Job.CustomerId);
             job.Customer = customer;
@@ -94,6 +97,9 @@ namespace DHSCRM.Controllers
         // GET: Jobs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            var jobDetailViewModel = new JobDetailViewModel();
+            jobDetailViewModel.Customers = _context.Customers.Select(c => new SelectListItem { Value = c.CustomerId.ToString(), Text = c.CustomerName }).ToList();
+
             if (id == null)
             {
                 return NotFound();
@@ -104,16 +110,17 @@ namespace DHSCRM.Controllers
             {
                 return NotFound();
             }
-            return View(job);
+            jobDetailViewModel.Job = job;
+            return View(jobDetailViewModel);
         }
 
         // POST: Jobs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("JobId,JobName,JobDescription,PostcodeFrom,PostcodeTo,TotalMiles")] Job job)
+        public async Task<IActionResult> Edit(int id, [Bind("JobId,JobName,JobDescription,PostcodeFrom,PostcodeTo,TotalMiles,JobDate")] Job job, JobDetailViewModel jobDetailViewModel)
         {
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.CustomerId == jobDetailViewModel.Job.CustomerId);
+            job.Customer = customer;
             if (id != job.JobId)
             {
                 return NotFound();
@@ -177,11 +184,33 @@ namespace DHSCRM.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult CalculateMilage(int value1, int value2)
+        public async Task<IActionResult> CalculateMilage(string postCodeOne, string postCodeTwo)
         {
-            TempData["ButtonValue"] = "123";
-            return RedirectToAction("Create");
+            //Get API key from file to avoid storing in code
+            string apiKey;
+            using (var sr = new StreamReader("C:/Users/Daniel.Hill/OneDrive - Access UK Ltd/Desktop/Personal/googleAPIKey.txt"))
+            {
+                apiKey = sr.ReadToEnd();
+            }
+            //Generate CURL URL
+            string url;
+            url = $"https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins={postCodeOne}&destinations={postCodeTwo}&mode=driving&key={apiKey}";
+
+            var distanceValue = "";
+            decimal distanceValueDecimal;
+            using (var client = new HttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(url);
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var o = JObject.Parse(responseBody);
+                distanceValue = (string)o["rows"][0]["elements"][0]["distance"]["text"];
+                distanceValueDecimal = Decimal.Parse(distanceValue.Substring(0, Math.Max(distanceValue.IndexOf(' '), 0)));
+            }
+
+            return Json(new
+            {
+                msg = distanceValueDecimal
+            });
         }
     }
 }

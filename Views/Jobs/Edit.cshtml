@@ -1,4 +1,4 @@
-﻿@model DHSCRM.Models.Job
+﻿@model DHSCRM.ViewModels.JobDetailViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,31 +12,38 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="JobId" />
+            <input type="hidden" asp-for="Job.JobId" />
             <div class="form-group">
-                <label asp-for="JobName" class="control-label"></label>
-                <input asp-for="JobName" class="form-control" />
-                <span asp-validation-for="JobName" class="text-danger"></span>
+                <label asp-for="Job.JobName" class="control-label"></label>
+                <input asp-for="Job.JobName" class="form-control" />
+                <span asp-validation-for="Job.JobName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="JobDescription" class="control-label"></label>
-                <input asp-for="JobDescription" class="form-control" />
-                <span asp-validation-for="JobDescription" class="text-danger"></span>
+                <label asp-for="Job.JobDate" class="control-label"></label>
+                <input asp-for="Job.JobDate" class="form-control" />
+                <span asp-validation-for="Job.JobDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PostcodeFrom" class="control-label"></label>
-                <input asp-for="PostcodeFrom" class="form-control" />
-                <span asp-validation-for="PostcodeFrom" class="text-danger"></span>
+                <label asp-for="Job.PostcodeFrom" class="control-label"></label>
+                <input asp-for="Job.PostcodeFrom" class="form-control" />
+                <span asp-validation-for="Job.PostcodeFrom" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PostcodeTo" class="control-label"></label>
-                <input asp-for="PostcodeTo" class="form-control" />
-                <span asp-validation-for="PostcodeTo" class="text-danger"></span>
+                <label asp-for="Job.PostcodeTo" class="control-label"></label>
+                <input asp-for="Job.PostcodeTo" class="form-control" />
+                <span asp-validation-for="Job.PostcodeTo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TotalMiles" class="control-label"></label>
-                <input asp-for="TotalMiles" class="form-control" />
-                <span asp-validation-for="TotalMiles" class="text-danger"></span>
+                <label asp-for="Job.TotalMiles" class="control-label"></label>
+                <input asp-for="Job.TotalMiles" class="form-control" />
+                <span asp-validation-for="Job.TotalMiles" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Customer.CustomerName" class="control-label"></label>
+                <select asp-for="Job.CustomerId" asp-items="@Model.Customers">
+                    <option selected></option>
+                </select>
+                <span asp-validation-for="Customer.CustomerId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

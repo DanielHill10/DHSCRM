@@ -4,14 +4,16 @@ using DHSCRM.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DHSCRM.Migrations
 {
     [DbContext(typeof(RecordDetailContext))]
-    partial class RecordDetailContextModelSnapshot : ModelSnapshot
+    [Migration("20210309203624_JobModelAmmendments")]
+    partial class JobModelAmmendments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,7 +93,7 @@ namespace DHSCRM.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("JobDate")
@@ -135,9 +137,7 @@ namespace DHSCRM.Migrations
                 {
                     b.HasOne("DHSCRM.Models.Customer", "Customer")
                         .WithMany("Jobs")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomerId");
 
                     b.Navigation("Customer");
                 });

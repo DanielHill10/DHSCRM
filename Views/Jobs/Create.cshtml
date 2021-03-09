@@ -18,9 +18,9 @@
                 <span asp-validation-for="Job.JobName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Job.JobDescription" class="control-label"></label>
-                <input asp-for="Job.JobDescription" class="form-control" />
-                <span asp-validation-for="Job.JobDescription" class="text-danger"></span>
+                <label asp-for="Job.JobDate" class="control-label"></label>
+                <input asp-for="Job.JobDate" class="form-control" />
+                <span asp-validation-for="Job.JobDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Job.PostcodeFrom" class="control-label"></label>
@@ -36,6 +36,9 @@
                 <label asp-for="Job.TotalMiles" class="control-label"></label>
                 <input asp-for="Job.TotalMiles" id="totalMiles" class="form-control" />
                 <span asp-validation-for="Job.TotalMiles" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-info" id="btnCalculate"> Calculate Milage</button>
             </div>
             <div class="form-group">
                 <label asp-for="Customer.CustomerName" class="control-label"></label>
@@ -55,8 +58,6 @@
 @TempData["ButtonValue"]
 <hr />
 
-<button class="btn btn-info" id="btnCalculate"> Calculate Milage</button>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
@@ -64,23 +65,26 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <script>
-        $(document).ready(function () {
-
-            "use strict";
-
-            $(document).on("click", "#btnCalculate", (function (e) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-
-                var postCodeFrom = $("#postCodeFrom").val();
-                var postCodeTo = $("#postCodeTo").val();
-                var total = postCodeFrom + postCodeTo;
-
-                $("#totalMiles").val(total);
-
-            }));
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(function () {
+            $('#btnCalculate').click(function (event) {
+                event.preventDefault();
+                //var postCodeOne = '123';
+                $.ajax({
+                    type: "POST",
+                    url: "/Jobs/CalculateMilage",
+                    data: { postCodeOne: $("#postCodeFrom").val(), postCodeTwo: $("#postCodeTo").val() },
+                    dataType: "json",
+                    success: function (data) {
+                        $('#totalMiles').val(data.msg);
+                    },
+                    error: function () {
+                        alert("Invalid postcodes!")
+                    }
+                });
+            });
         });
-    </script>
+    });
+</script>
 }

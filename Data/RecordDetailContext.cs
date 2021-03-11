@@ -16,5 +16,6 @@ namespace DHSCRM.Data
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<DHSCRM.Models.JobHeader> JobHeader { get; set; }
     }
 }
